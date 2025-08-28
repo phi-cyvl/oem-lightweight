@@ -14,7 +14,10 @@ config = C
 C.repo_name = 'OEM-LightweightModel'
 C.abs_dir = osp.realpath(".")
 C.this_dir = C.abs_dir.split(osp.sep)[-1]
-C.root_dir = C.abs_dir[:C.abs_dir.index(C.repo_name) + len(C.repo_name)]
+if C.repo_name in C.abs_dir:
+    C.root_dir = C.abs_dir[:C.abs_dir.index(C.repo_name) + len(C.repo_name)]
+else:
+    C.root_dir = C.abs_dir  # fallback if repo_name not found
 
 # path config
 def add_path(path):

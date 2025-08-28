@@ -8,7 +8,7 @@ from sparsemask_api.sparse_mask_eval_mode import SparseMask
 
 def fasterseg(arch, weights):
     # load arch
-    state = torch.load(arch, map_location="cpu")
+    state = torch.load(arch, map_location="cpu", weights_only=False)
     model = Network([state["alpha_1_0"].detach(),
                      state["alpha_1_1"].detach(),
                      state["alpha_1_2"].detach()],
@@ -26,7 +26,7 @@ def fasterseg(arch, weights):
     model.build_structure([2, 1])
 
     # load weights
-    weights_dict = torch.load(weights, map_location="cpu")
+    weights_dict = torch.load(weights, map_location="cpu", weights_only=False)
     state = model.state_dict()
     weights_dict = {k: v for k, v in weights_dict.items() if k in state}
     state.update(weights_dict)
@@ -45,7 +45,7 @@ def sparsemask(mask, weights):
                        num_classes=config.num_classes)
 
     # load weight
-    weights_dict = torch.load(weights, map_location="cpu")
+    weights_dict = torch.load(weights, map_location="cpu", weights_only=False)
     weights_dict = {key.replace("module.", ""): value for key, value in weights_dict['state_dict'].items()}
     model.load_state_dict(weights_dict, strict=False)
 
